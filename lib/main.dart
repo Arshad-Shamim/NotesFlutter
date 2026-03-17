@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notes/screens/home.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -10,9 +12,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomeScreen()
+    return ScreenUtilInit(
+      designSize:Size(MediaQuery.of(context).size.width,MediaQuery.of(context).size.height),
+      minTextAdapt: true,
+      builder: (_, child){
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: HomeScreen(),
+        );
+      },
     );
   }
 }
