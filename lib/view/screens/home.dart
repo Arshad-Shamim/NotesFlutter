@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notes/model_view/bloc/home_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:notes/screens/notes.dart';
+import 'package:notes/view/screens/notes.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

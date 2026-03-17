@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:notes/screens/notes.dart';
+import 'package:notes/view/screens/notes.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';

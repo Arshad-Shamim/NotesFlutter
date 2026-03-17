@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:notes/screens/home.dart';
+import 'package:notes/view/screens/home.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
