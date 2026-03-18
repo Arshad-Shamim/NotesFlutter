@@ -17,6 +17,12 @@ class NotesScreen extends StatefulWidget {
 class _NotesScreenState extends State<NotesScreen> {
 
   NotesBloc notesBloc = NotesBloc();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController noteController = TextEditingController();
+
+  void showSnackBar(String msg){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  }
 
   @override
   void initState() {
@@ -35,7 +41,15 @@ class _NotesScreenState extends State<NotesScreen> {
       listenWhen: (previous, current) => current is NotesActionState,
       buildWhen: (previous, current) => current is! NotesActionState,
       listener: (context, state) {
-        // TODO: implement listener
+
+        switch(state.runtimeType){
+          case NotesUntitleNote:
+            showSnackBar("Note can be Untitle");
+            break;
+          case NotesSaveNoteSuccess:
+            showSnackBar("Note Save Successfully");
+            break;
+        }
       },
       builder: (context, state) {
 
@@ -46,14 +60,26 @@ class _NotesScreenState extends State<NotesScreen> {
           case NotesCreateNoteState || NotesEditNotesState:
             return Scaffold(
               backgroundColor: Colors.white,
-              appBar: AppBar(backgroundColor: Colors.white),
+              appBar: AppBar(
+                backgroundColor: Colors.white,
+                actions: [
+                  IconButton(
+                    iconSize: 28.sp,
+                    onPressed: (){  
+                      notesBloc.add(NotesSaveNote(data: noteController.text,title: titleController.text));
+                    }, 
+                    icon: Icon(Icons.save_outlined)
+                  ),
+                  SizedBox(width: 25.w,)
+                ],
+              ),
               body: SafeArea(
                 child: Column(
                   spacing: 6,
                   children: [
                     DateSection(),
                     SizedBox(height: 10,),
-                    NotesPad(),
+                    NotesPad(titleController: titleController,noteController: noteController,),
                   ],
                 ),
               ),

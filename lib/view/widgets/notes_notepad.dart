@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NotesPad extends StatefulWidget {
-  const NotesPad({super.key});
+
+  final TextEditingController titleController;
+  final TextEditingController noteController;
+
+  const NotesPad({super.key, required this.titleController, required this.noteController});
 
   @override
   State<NotesPad> createState() => _NotesPadState();
 }
 
 class _NotesPadState extends State<NotesPad> {
-
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController noteController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class _NotesPadState extends State<NotesPad> {
         child: Column(
           children: [
             TextField(
-              controller: titleController,
+              controller: widget.titleController,
               style: TextStyle(
                 fontSize: 22.sp,
                 fontWeight: FontWeight.bold,
@@ -46,7 +47,7 @@ class _NotesPadState extends State<NotesPad> {
                                   
                   // Text Field
                   TextField(
-                    controller: noteController,
+                    controller: widget.noteController,
                     maxLines: null,
                     expands: true,
                     style: TextStyle(

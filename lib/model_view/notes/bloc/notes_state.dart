@@ -13,3 +13,7 @@ class NotesCreateNoteState extends NotesState{
 
 class NotesEditNotesState extends NotesState{
 }
+
+class NotesUntitleNote extends NotesActionState{}
+
+class NotesSaveNoteSuccess extends NotesActionState{}

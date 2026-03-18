@@ -8,3 +8,10 @@ class NotesInitialEvent extends NotesEvent{
 
   NotesInitialEvent({required this.isEdit});
 }
+
+class NotesSaveNote extends NotesEvent{
+  final String title;
+  final String data;
+
+  NotesSaveNote({required this.data,required this.title});
+}
