@@ -28,14 +28,13 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     String data = event.data;
 
     if(title.isEmpty){
-      emit(NotesUntitleNote());
+      emit(NotesUntitleNoteState());
     }else{
       emit(NotesLoadingState());
 
       DbHelper Db = DbHelper.getInstance;
       await Db.addNotes(data: data,title: title);
-      print(await Db.getAllNotes());
-      emit(NotesSaveNoteSuccess());
+      emit(NotesSaveNoteSuccessState());
     }
   }
 }

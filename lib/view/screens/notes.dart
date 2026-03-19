@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:notes/model_view/notes/bloc/notes_bloc.dart';
+import 'package:notes/view/screens/home.dart';
 import 'package:notes/view/widgets/notes_date.dart';
 import 'package:notes/view/widgets/notes_notepad.dart';
 import 'package:flutter/services.dart';
@@ -43,11 +44,12 @@ class _NotesScreenState extends State<NotesScreen> {
       listener: (context, state) {
 
         switch(state.runtimeType){
-          case NotesUntitleNote:
+          case NotesUntitleNoteState:
             showSnackBar("Note can be Untitle");
             break;
-          case NotesSaveNoteSuccess:
+          case NotesSaveNoteSuccessState:
             showSnackBar("Note Save Successfully");
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
             break;
         }
       },

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/widgets.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -45,7 +46,7 @@ class DbHelper{
     _myDB = await _getDB();
     List<Map<String,dynamic>> data = await _myDB!.rawQuery("select * from $TABLE_NOTES");
 
-    print(data);
+    debugPrint("$data");
 
     return data;
   }
