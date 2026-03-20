@@ -50,4 +50,13 @@ class DbHelper{
 
     return data;
   }
+
+  Future<bool> deleteNote({required int id}) async{
+
+    _myDB = await _getDB();
+
+    int rowAffected = await _myDB!.delete(TABLE_NOTES,where:"id=?",whereArgs: [id]);
+
+    return rowAffected>0;
+  }    
 }

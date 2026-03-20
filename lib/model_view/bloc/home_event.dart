@@ -6,3 +6,9 @@ abstract class HomeEvent {}
 class HomeAddNoteBtnClickEvent extends HomeEvent{}
 
 class HomeInitialEvent extends HomeEvent{}
+
+class HomeNoteDeleteEvent extends HomeEvent{
+  final int id;
+
+  HomeNoteDeleteEvent({required this.id});
+}

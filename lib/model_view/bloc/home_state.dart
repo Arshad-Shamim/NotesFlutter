@@ -13,3 +13,7 @@ class HomeDisplayNotesState extends HomeState{
 
   HomeDisplayNotesState({required this.listNotesModel});
 }
+
+class HomeNoteDeleteSuccessState extends HomeActionState{}
+
+class HomeNoteDeleteFailerState extends HomeActionState{}
