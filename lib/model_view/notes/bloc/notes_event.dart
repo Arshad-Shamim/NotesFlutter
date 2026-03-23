@@ -10,8 +10,11 @@ class NotesInitialEvent extends NotesEvent{
 }
 
 class NotesSaveNote extends NotesEvent{
-  final String title;
   final String data;
+  final String title;
+  final String date;
+  final String month;
+  final String year;
 
-  NotesSaveNote({required this.data,required this.title});
+  NotesSaveNote({required this.data, required this.title, required this.date, required this.month, required this.year});
 }

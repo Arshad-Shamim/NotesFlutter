@@ -26,6 +26,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
   FutureOr<void> notesSaveNote(NotesSaveNote event, Emitter<NotesState> emit) async{
     String title = event.title;
     String data = event.data;
+    final date = "${event.year}-${event.month}-${event.date}";
 
     if(title.isEmpty){
       emit(NotesUntitleNoteState());
@@ -33,7 +34,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
       emit(NotesLoadingState());
 
       DbHelper Db = DbHelper.getInstance;
-      await Db.addNotes(data: data,title: title);
+      await Db.addNotes(data: data,title: title,date: date);
       emit(NotesSaveNoteSuccessState());
     }
   }

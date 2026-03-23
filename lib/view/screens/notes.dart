@@ -6,6 +6,7 @@ import 'package:notes/view/screens/home.dart';
 import 'package:notes/view/widgets/notes_date.dart';
 import 'package:notes/view/widgets/notes_notepad.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 
 class NotesScreen extends StatefulWidget {
@@ -21,6 +22,9 @@ class _NotesScreenState extends State<NotesScreen> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController noteController = TextEditingController();
 
+  late DateTime now;
+  late String date, month, year, day, monthNumber;
+
   void showSnackBar(String msg){
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
@@ -29,6 +33,12 @@ class _NotesScreenState extends State<NotesScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    now = DateTime.now();
+    date = DateFormat("dd").format(now);
+    month = DateFormat("MMMM").format(now);
+    year = DateFormat("yyyy").format(now);
+    day = DateFormat("EEEE").format(now);
+    monthNumber =  DateFormat("MM").format(now);
     notesBloc.add(NotesInitialEvent(isEdit: false));
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -49,7 +59,8 @@ class _NotesScreenState extends State<NotesScreen> {
             break;
           case NotesSaveNoteSuccessState:
             showSnackBar("Note Save Successfully");
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+            // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+            Navigator.pop(context,true);
             break;
         }
       },
@@ -68,7 +79,7 @@ class _NotesScreenState extends State<NotesScreen> {
                   IconButton(
                     iconSize: 28.sp,
                     onPressed: (){  
-                      notesBloc.add(NotesSaveNote(data: noteController.text,title: titleController.text));
+                      notesBloc.add(NotesSaveNote(data: noteController.text,title: titleController.text, date: date, month: monthNumber, year: year));
                     }, 
                     icon: Icon(Icons.save_outlined)
                   ),
@@ -79,7 +90,7 @@ class _NotesScreenState extends State<NotesScreen> {
                 child: Column(
                   spacing: 6,
                   children: [
-                    DateSection(),
+                    DateSection(date: date, month: month, year: year, day: day),
                     SizedBox(height: 10,),
                     NotesPad(titleController: titleController,noteController: noteController,),
                   ],

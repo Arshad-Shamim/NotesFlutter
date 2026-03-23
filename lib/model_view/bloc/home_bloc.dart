@@ -24,10 +24,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   FutureOr<void> homeInitialEvent(HomeInitialEvent event, Emitter<HomeState> emit) async{
+    emit(HomeLoadingState());
     DbHelper Db = DbHelper.getInstance;
     List<Map<String,dynamic>> notesData = await Db.getAllNotes();
-    List<NotesModel> notesModel = notesData.map((e)=>NotesModel.fromList(title: e["title"].trim(), description: e["data"]==""?null:e["data"].trim(), id: e["id"])).toList();
+    List<NotesModel> notesModel = notesData.map((e)=>NotesModel.fromList(title: e["title"].trim(), description: e["data"]==""?null:e["data"].trim(), id: e["id"], date: e["create_date"]),).toList();
 
+    print(notesData);
     await Future.delayed(Duration(seconds: 5));
     emit(HomeDisplayNotesState(listNotesModel: notesModel));
   }

@@ -11,6 +11,7 @@ class DbHelper{
   static const String COLUMN_TITLE = "title";
   static const String COLUMN_DATA = "data";
   static const String COLUMN_ID = "id";
+  static const String COLUMN_DATE = "create_date";
 
   DbHelper._();
   static final DbHelper getInstance = DbHelper._();
@@ -31,13 +32,13 @@ class DbHelper{
       dbPath,   
       version:1,
       onCreate: (db, version) => 
-      db.execute("create table $TABLE_NOTES ($COLUMN_ID integer primary key autoincrement, $COLUMN_TITLE string not null,$COLUMN_DATA string)"),);
+      db.execute("create table $TABLE_NOTES ($COLUMN_ID integer primary key autoincrement, $COLUMN_TITLE string not null,$COLUMN_DATA string,$COLUMN_DATE date)"),);
   }
 
-  Future<bool> addNotes({required String title, required String data}) async{
+  Future<bool> addNotes({required String title, required String data, required String date}) async{
     _myDB = await _getDB();
 
-    int rowAffected = await _myDB!.insert(TABLE_NOTES, {COLUMN_DATA:data,COLUMN_TITLE:title});
+    int rowAffected = await _myDB!.insert(TABLE_NOTES, {COLUMN_DATA:data,COLUMN_TITLE:title, COLUMN_DATE: date});
 
     return rowAffected>0;
   }
@@ -45,9 +46,6 @@ class DbHelper{
   Future<List<Map<String,dynamic>>> getAllNotes() async{
     _myDB = await _getDB();
     List<Map<String,dynamic>> data = await _myDB!.rawQuery("select * from $TABLE_NOTES");
-
-    debugPrint("$data");
-
     return data;
   }
 

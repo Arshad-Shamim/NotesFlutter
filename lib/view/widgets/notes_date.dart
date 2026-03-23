@@ -3,16 +3,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 class DateSection extends StatelessWidget {
-  const DateSection({super.key});
+  final String date;
+  final String month;
+  final String year;
+  final String day;
+
+  const DateSection({super.key,required this.date, required this.month, required this.year, required this.day});
 
   @override
   Widget build(BuildContext context) {
-    DateTime now = DateTime.now();
+    // DateTime now = DateTime.now();
 
-    final String date = DateFormat("dd").format(now);
-    final String month = DateFormat("MMMM").format(now);
-    final String year = DateFormat("yyyy").format(now);
-    final String day = DateFormat("EEEE").format(now);
+    // final String date = DateFormat("dd").format(now);
+    // final String month = DateFormat("MMMM").format(now);
+    // final String year = DateFormat("yyyy").format(now);
+    // final String day = DateFormat("EEEE").format(now);
 
     return Padding(
       padding: EdgeInsetsGeometry.symmetric(vertical: 20,horizontal: 16),
