@@ -9,12 +9,24 @@ class NotesInitialEvent extends NotesEvent{
   NotesInitialEvent({required this.isEdit});
 }
 
-class NotesSaveNote extends NotesEvent{
+class NotesSaveNoteEvent extends NotesEvent{
   final String data;
   final String title;
   final String date;
   final String month;
   final String year;
 
-  NotesSaveNote({required this.data, required this.title, required this.date, required this.month, required this.year});
+  NotesSaveNoteEvent({required this.data, required this.title, required this.date, required this.month, required this.year});
+}
+
+class NoteSaveEditNoteEvent extends NotesEvent{
+
+  final int id;
+  final String title;
+  final String data;
+  final String date;
+  final String month;
+  final String year;
+
+  NoteSaveEditNoteEvent({required this.id, required this.title, required this.data, required this.date, required this.month, required this.year});
 }

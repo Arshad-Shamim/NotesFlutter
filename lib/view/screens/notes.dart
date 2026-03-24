@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:notes/model/Notes.dart';
+import 'package:notes/model_view/home/bloc/home_bloc.dart';
 import 'package:notes/model_view/notes/bloc/notes_bloc.dart';
 import 'package:notes/view/screens/home.dart';
 import 'package:notes/view/widgets/notes_date.dart';
@@ -10,7 +12,11 @@ import 'package:intl/intl.dart';
 
 
 class NotesScreen extends StatefulWidget {
-  const NotesScreen({super.key});
+
+  final bool isEdit;
+  NotesModel? note;
+
+  NotesScreen({super.key, required this.isEdit, this.note});
 
   @override
   State<NotesScreen> createState() => _NotesScreenState();
@@ -19,30 +25,47 @@ class NotesScreen extends StatefulWidget {
 class _NotesScreenState extends State<NotesScreen> {
 
   NotesBloc notesBloc = NotesBloc();
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController noteController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
 
   late DateTime now;
   late String date, month, year, day, monthNumber;
+  late bool isEdit;
+  NotesModel? note;
 
   void showSnackBar(String msg){
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  }
+
+  void handleEditMode(NotesModel note){
+    titleController.text = note.title;
+    noteController.text = note.description??"";
+    notesBloc.add(NotesInitialEvent(isEdit: true));
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     now = DateTime.now();
     date = DateFormat("dd").format(now);
     month = DateFormat("MMMM").format(now);
     year = DateFormat("yyyy").format(now);
     day = DateFormat("EEEE").format(now);
     monthNumber =  DateFormat("MM").format(now);
-    notesBloc.add(NotesInitialEvent(isEdit: false));
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    isEdit = widget.isEdit;
+    if(isEdit){
+      note = widget.note!;
+    }
+
+    if(isEdit){
+      handleEditMode(widget.note!);
+    }else{
+      notesBloc.add(NotesInitialEvent(isEdit:false));
+    }
   }
 
   @override
@@ -62,12 +85,16 @@ class _NotesScreenState extends State<NotesScreen> {
             // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
             Navigator.pop(context,true);
             break;
+          case NoteEditNoteSuccessState:
+            showSnackBar("Note Edit Successfully!");
+            Navigator.pop(context,true);
+            break;
         }
       },
       builder: (context, state) {
 
         switch(state.runtimeType){
-          case NotesInitialEvent:
+          case NotesLoadingState:
             return Scaffold(body: Center(child:CircularProgressIndicator()),);
             break;
           case NotesCreateNoteState || NotesEditNotesState:
@@ -78,8 +105,12 @@ class _NotesScreenState extends State<NotesScreen> {
                 actions: [
                   IconButton(
                     iconSize: 28.sp,
-                    onPressed: (){  
-                      notesBloc.add(NotesSaveNote(data: noteController.text,title: titleController.text, date: date, month: monthNumber, year: year));
+                    onPressed: (){
+                      if(isEdit){
+                        notesBloc.add(NoteSaveEditNoteEvent(id: note!.id, title: titleController.text, data: noteController.text, date: date, month: month, year: year));
+                      }else{
+                        notesBloc.add(NotesSaveNoteEvent(data: noteController.text,title: titleController.text, date: date, month: monthNumber, year: year));
+                      }
                     }, 
                     icon: Icon(Icons.save_outlined)
                   ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:notes/model_view/home/home_bloc.dart';
+import 'package:notes/model_view/home/bloc/home_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes/view/screens/notes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,8 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
       listener: (context, state) async{
 
         switch(state.runtimeType){
-          case HomeNavigateNoteScreenState:
-            final result = await Navigator.push(context, MaterialPageRoute(builder: (context)=>NotesScreen()));
+          case HomeNavigateCreateNoteScreenState:
+            final result = await Navigator.push(context, MaterialPageRoute(builder: (context)=>NotesScreen(isEdit: false,)));
             if(result!=null && result){
               homeBloc.add(HomeInitialEvent());
             }
@@ -49,6 +49,12 @@ class _HomeScreenState extends State<HomeScreen> {
             showSnackBar("Note Delete Failed");
             homeBloc.add(HomeInitialEvent());
             break;
+          case HomeNavigateEditNoteState:
+            HomeNavigateEditNoteState currentState = state as HomeNavigateEditNoteState;
+            final result = await Navigator.push(context, (MaterialPageRoute(builder: (context)=>NotesScreen(isEdit: true,note:currentState.note))));
+            if(result!=null && result){
+              homeBloc.add(HomeInitialEvent());
+            }
         }
 
       },
@@ -122,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   SizedBox(height: 4.h),
                                       
                                   Text(
-                                    note.description!=null?(note.description!.substring(0,note.description!.length>40?40:note.description!.length)+(note.description!.length>40?".....":"")): "No details added",
+                                    note.description!=null?(note.description!.substring(0,note.description!.length>30?30:note.description!.length)+(note.description!.length>40?".....":"")): "No details added",
                                     style: TextStyle(
                                       color: note.description==null ? Colors.grey : Colors.black87,
                                       fontStyle: note.description==null ? FontStyle.italic : FontStyle.normal,
@@ -144,39 +150,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       
                             // 🔹 Right Icons
                             SizedBox(height: 10.h),
-                      
-                            // PopupMenuButton<String>(
-                            //   icon: Icon(Icons.more_vert),
-                            //   onSelected: (value) {
-                            //     // if (value == "edit") {
-                            //     //   homeBloc.add(HomeEditNoteEvent(note));   // 👈 create this event
-                            //     // } else if (value == "delete") {
-                            //     //   homeBloc.add(HomeDeleteNoteEvent(note)); // 👈 create this event
-                            //     // }
-                            //   },
-                            //   itemBuilder: (context) => [
-                            //     PopupMenuItem(
-                            //       value: "edit",
-                            //       child: Row(
-                            //         children: [
-                            //           Icon(Icons.edit, size: 18),
-                            //           SizedBox(width: 10),
-                            //           Text("Edit"),
-                            //         ],
-                            //       ),
-                            //     ),
-                            //     PopupMenuItem(
-                            //       value: "delete",
-                            //       child: Row(
-                            //         children: [
-                            //           Icon(Icons.delete, size: 18, color: Colors.red),
-                            //           SizedBox(width: 10),
-                            //           Text("Delete"),
-                            //         ],
-                            //       ),
-                            //     ),
-                            //   ],
-                            // )
+
+                            IconButton(
+                              onPressed: (){
+                                homeBloc.add(HomeEditIconClickEvent(note: note));
+                              },
+                              icon: Icon(Icons.edit),
+                              color: Colors.blue.shade300,
+                            )
                           ],
                         ),
                       ),

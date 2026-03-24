@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
+import 'package:notes/model/Notes.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -57,4 +58,11 @@ class DbHelper{
 
     return rowAffected>0;
   }    
+
+  Future<bool> updateNote({required NotesModel note}) async{
+    Database Db = await _getDB();
+    int rowAffected = await Db.update(TABLE_NOTES,{COLUMN_TITLE:note.title,COLUMN_DATA:note.description,COLUMN_DATE:note.date},where:"id=?",whereArgs: [note.id]);
+
+    return rowAffected>0;
+  }
 }

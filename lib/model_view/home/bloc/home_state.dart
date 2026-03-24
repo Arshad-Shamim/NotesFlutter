@@ -6,7 +6,7 @@ class HomeLoadingState extends HomeState {}
 
 abstract class HomeActionState extends HomeState{}
 
-class HomeNavigateNoteScreenState extends HomeActionState{}
+class HomeNavigateCreateNoteScreenState extends HomeActionState{}
 
 class HomeDisplayNotesState extends HomeState{
   List<NotesModel> listNotesModel;
@@ -17,3 +17,8 @@ class HomeDisplayNotesState extends HomeState{
 class HomeNoteDeleteSuccessState extends HomeActionState{}
 
 class HomeNoteDeleteFailerState extends HomeActionState{}
+
+class HomeNavigateEditNoteState extends HomeActionState{
+  NotesModel note;
+  HomeNavigateEditNoteState({required this.note});
+}

@@ -17,10 +17,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeInitialEvent>(homeInitialEvent);
     on<HomeAddNoteBtnClickEvent>(homeAddNoteBtnClickEvent);
     on<HomeNoteDeleteEvent>(homeNoteDeleteEvent);
+    on<HomeEditIconClickEvent>(homeEditIconClickEvent);
   }
 
   FutureOr<void> homeAddNoteBtnClickEvent(HomeAddNoteBtnClickEvent event, Emitter<HomeState> emit) {
-    emit(HomeNavigateNoteScreenState());
+    emit(HomeNavigateCreateNoteScreenState());
   }
 
   FutureOr<void> homeInitialEvent(HomeInitialEvent event, Emitter<HomeState> emit) async{
@@ -29,7 +30,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     List<Map<String,dynamic>> notesData = await Db.getAllNotes();
     List<NotesModel> notesModel = notesData.map((e)=>NotesModel.fromList(title: e["title"].trim(), description: e["data"]==""?null:e["data"].trim(), id: e["id"], date: e["create_date"]),).toList();
 
-    print(notesData);
     await Future.delayed(Duration(seconds: 5));
     emit(HomeDisplayNotesState(listNotesModel: notesModel));
   }
@@ -45,6 +45,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }else{
       emit(HomeNoteDeleteFailerState());
     }
+  }
+
+  FutureOr<void> homeEditIconClickEvent(HomeEditIconClickEvent event, Emitter<HomeState> emit) {
+    emit(HomeNavigateEditNoteState(note: event.note));
   }
 }
 

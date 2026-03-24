@@ -12,3 +12,9 @@ class HomeNoteDeleteEvent extends HomeEvent{
 
   HomeNoteDeleteEvent({required this.id});
 }
+
+class HomeEditIconClickEvent extends HomeEvent{
+  NotesModel note;
+
+  HomeEditIconClickEvent({required this.note});
+}

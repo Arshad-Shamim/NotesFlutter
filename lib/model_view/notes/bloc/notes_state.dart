@@ -11,9 +11,10 @@ class NotesLoadingState extends NotesState{}
 class NotesCreateNoteState extends NotesState{
 }
 
-class NotesEditNotesState extends NotesState{
-}
+class NotesEditNotesState extends NotesState{}
 
 class NotesUntitleNoteState extends NotesActionState{}
 
 class NotesSaveNoteSuccessState extends NotesActionState{}
+
+class NoteEditNoteSuccessState extends NotesActionState{}
