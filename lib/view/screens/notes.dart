@@ -107,7 +107,7 @@ class _NotesScreenState extends State<NotesScreen> {
                     iconSize: 28.sp,
                     onPressed: (){
                       if(isEdit){
-                        notesBloc.add(NoteSaveEditNoteEvent(id: note!.id, title: titleController.text, data: noteController.text, date: date, month: month, year: year));
+                        notesBloc.add(NoteSaveEditNoteEvent(id: note!.id, title: titleController.text, data: noteController.text, date: date, month: monthNumber, year: year));
                       }else{
                         notesBloc.add(NotesSaveNoteEvent(data: noteController.text,title: titleController.text, date: date, month: monthNumber, year: year));
                       }
