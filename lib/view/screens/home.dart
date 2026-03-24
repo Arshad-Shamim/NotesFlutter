@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:notes/model_view/bloc/home_bloc.dart';
+import 'package:notes/model_view/home/home_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes/view/screens/notes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   SizedBox(height: 4.h),
                                       
                                   Text(
-                                    note.description!=null?(note.description!.substring(0,note.description!.length>40?40:note.description!.length)+(note.description!.length>40?" ...":"")): "No details added",
+                                    note.description!=null?(note.description!.substring(0,note.description!.length>40?40:note.description!.length)+(note.description!.length>40?".....":"")): "No details added",
                                     style: TextStyle(
                                       color: note.description==null ? Colors.grey : Colors.black87,
                                       fontStyle: note.description==null ? FontStyle.italic : FontStyle.normal,
