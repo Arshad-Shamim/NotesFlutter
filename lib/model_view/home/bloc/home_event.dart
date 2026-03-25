@@ -18,3 +18,9 @@ class HomeEditIconClickEvent extends HomeEvent{
 
   HomeEditIconClickEvent({required this.note});
 }
+
+class HomeNoteBtnTapEvent extends HomeEvent{
+  NotesModel note;
+
+  HomeNoteBtnTapEvent({required this.note});
+}

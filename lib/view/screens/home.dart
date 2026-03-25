@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
         switch(state.runtimeType){
           case HomeNavigateCreateNoteScreenState:
-            final result = await Navigator.push(context, MaterialPageRoute(builder: (context)=>NotesScreen(isEdit: false,)));
+            final result = await Navigator.push(context, MaterialPageRoute(builder: (context)=>NotesScreen(isEdit: false,isRead: false,)));
             if(result!=null && result){
               homeBloc.add(HomeInitialEvent());
             }
@@ -51,10 +51,14 @@ class _HomeScreenState extends State<HomeScreen> {
             break;
           case HomeNavigateEditNoteState:
             HomeNavigateEditNoteState currentState = state as HomeNavigateEditNoteState;
-            final result = await Navigator.push(context, (MaterialPageRoute(builder: (context)=>NotesScreen(isEdit: true,note:currentState.note))));
+            final result = await Navigator.push(context, (MaterialPageRoute(builder: (context)=>NotesScreen(isEdit: true,note:currentState.note,isRead: false,))));
             if(result!=null && result){
               homeBloc.add(HomeInitialEvent());
             }
+            break;
+          case HomeNavigateReadNoteState:
+            HomeNavigateReadNoteState currentState = state as HomeNavigateReadNoteState;
+            final result = await Navigator.push(context, MaterialPageRoute(builder: (context)=>NotesScreen(isEdit: false, isRead: true,note: currentState.note,)));
         }
 
       },
@@ -114,37 +118,42 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(width: 10.w),
                                       
                             Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    note.title,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16.sp,
+                              child: InkWell(
+                                onTap: (){
+                                  homeBloc.add(HomeNoteBtnTapEvent(note: note));
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      note.title,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16.sp,
+                                      ),
                                     ),
-                                  ),
-                                      
-                                  SizedBox(height: 4.h),
-                                      
-                                  Text(
-                                    note.description!=null?(note.description!.substring(0,note.description!.length>30?30:note.description!.length)+(note.description!.length>40?".....":"")): "No details added",
-                                    style: TextStyle(
-                                      color: note.description==null ? Colors.grey : Colors.black87,
-                                      fontStyle: note.description==null ? FontStyle.italic : FontStyle.normal,
+                                        
+                                    SizedBox(height: 4.h),
+                                        
+                                    Text(
+                                      note.description!=null?(note.description!.substring(0,note.description!.length>30?30:note.description!.length)+(note.description!.length>40?".....":"")): "No details added",
+                                      style: TextStyle(
+                                        color: note.description==null ? Colors.grey : Colors.black87,
+                                        fontStyle: note.description==null ? FontStyle.italic : FontStyle.normal,
+                                      ),
                                     ),
-                                  ),
-                                      
-                                  SizedBox(height: 6.h),
-                                      
-                                  Text(
-                                    "$datenum/$month/$year",
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 12.sp,
+                                        
+                                    SizedBox(height: 6.h),
+                                        
+                                    Text(
+                                      "$datenum/$month/$year",
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 12.sp,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                                       
@@ -156,7 +165,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 homeBloc.add(HomeEditIconClickEvent(note: note));
                               },
                               icon: Icon(Icons.edit),
-                              color: Colors.blue.shade300,
+                              color: Colors.grey,
+                              iconSize: 20,
                             )
                           ],
                         ),

@@ -5,8 +5,9 @@ abstract class NotesEvent {}
 
 class NotesInitialEvent extends NotesEvent{
   final bool isEdit;
+  final bool isRead;
 
-  NotesInitialEvent({required this.isEdit});
+  NotesInitialEvent({required this.isEdit, required this.isRead});
 }
 
 class NotesSaveNoteEvent extends NotesEvent{

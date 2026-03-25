@@ -18,6 +18,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeAddNoteBtnClickEvent>(homeAddNoteBtnClickEvent);
     on<HomeNoteDeleteEvent>(homeNoteDeleteEvent);
     on<HomeEditIconClickEvent>(homeEditIconClickEvent);
+    on<HomeNoteBtnTapEvent>(homeNoteBtnTapEvent);
   }
 
   FutureOr<void> homeAddNoteBtnClickEvent(HomeAddNoteBtnClickEvent event, Emitter<HomeState> emit) {
@@ -49,6 +50,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   FutureOr<void> homeEditIconClickEvent(HomeEditIconClickEvent event, Emitter<HomeState> emit) {
     emit(HomeNavigateEditNoteState(note: event.note));
+  }
+
+
+  FutureOr<void> homeNoteBtnTapEvent(HomeNoteBtnTapEvent event, Emitter<HomeState> emit) {
+    emit(HomeNavigateReadNoteState(note: event.note));
   }
 }
 

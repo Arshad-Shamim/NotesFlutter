@@ -14,9 +14,10 @@ import 'package:intl/intl.dart';
 class NotesScreen extends StatefulWidget {
 
   final bool isEdit;
+  final bool isRead;
   NotesModel? note;
 
-  NotesScreen({super.key, required this.isEdit, this.note});
+  NotesScreen({super.key, required this.isEdit, this.note,required this.isRead});
 
   @override
   State<NotesScreen> createState() => _NotesScreenState();
@@ -32,6 +33,7 @@ class _NotesScreenState extends State<NotesScreen> {
   late String date, month, year, day, monthNumber;
   late bool isEdit;
   NotesModel? note;
+  late bool isRead;
 
   void showSnackBar(String msg){
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
@@ -39,8 +41,15 @@ class _NotesScreenState extends State<NotesScreen> {
 
   void handleEditMode(NotesModel note){
     titleController.text = note.title;
-    noteController.text = note.description??"";
-    notesBloc.add(NotesInitialEvent(isEdit: true));
+    noteController.text = note.description??"No Content";
+    notesBloc.add(NotesInitialEvent(isEdit: true, isRead: false));
+  }
+
+  void handleReadMode(NotesModel note){
+    titleController.text = note.title;
+    noteController.text=note.description??"No Content";
+    // final now = DateTime.parse(note.date);
+    notesBloc.add(NotesInitialEvent(isEdit: false, isRead: true));
   }
 
   @override
@@ -50,21 +59,30 @@ class _NotesScreenState extends State<NotesScreen> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    now = DateTime.now();
+    isEdit = widget.isEdit;
+    isRead = widget.isRead;
+    
+    if(!isRead){
+      now = DateTime.now();
+    }else{
+      now = DateTime.parse(widget.note!.date);
+    }
+
     date = DateFormat("dd").format(now);
     month = DateFormat("MMMM").format(now);
     year = DateFormat("yyyy").format(now);
     day = DateFormat("EEEE").format(now);
     monthNumber =  DateFormat("MM").format(now);
-    isEdit = widget.isEdit;
-    if(isEdit){
+    if(isEdit || isRead){
       note = widget.note!;
     }
 
     if(isEdit){
       handleEditMode(widget.note!);
+    }else if(isRead){
+      handleReadMode(widget.note!);
     }else{
-      notesBloc.add(NotesInitialEvent(isEdit:false));
+      notesBloc.add(NotesInitialEvent(isEdit:false,isRead: false));
     }
   }
 
@@ -82,7 +100,6 @@ class _NotesScreenState extends State<NotesScreen> {
             break;
           case NotesSaveNoteSuccessState:
             showSnackBar("Note Save Successfully");
-            // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
             Navigator.pop(context,true);
             break;
           case NoteEditNoteSuccessState:
@@ -97,24 +114,25 @@ class _NotesScreenState extends State<NotesScreen> {
           case NotesLoadingState:
             return Scaffold(body: Center(child:CircularProgressIndicator()),);
             break;
-          case NotesCreateNoteState || NotesEditNotesState:
+          case NotesCreateNoteState || NotesEditNotesState || NoteReadNoteState:
             return Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
                 backgroundColor: Colors.white,
                 actions: [
-                  IconButton(
-                    iconSize: 28.sp,
-                    onPressed: (){
-                      if(isEdit){
-                        notesBloc.add(NoteSaveEditNoteEvent(id: note!.id, title: titleController.text, data: noteController.text, date: date, month: monthNumber, year: year));
-                      }else{
-                        notesBloc.add(NotesSaveNoteEvent(data: noteController.text,title: titleController.text, date: date, month: monthNumber, year: year));
-                      }
-                    }, 
-                    icon: Icon(Icons.save_outlined)
-                  ),
-                  SizedBox(width: 25.w,)
+                  if(!isRead)          
+                    IconButton(
+                      iconSize: 28.sp,
+                      onPressed: (){
+                        if(isEdit){
+                          notesBloc.add(NoteSaveEditNoteEvent(id: note!.id, title: titleController.text, data: noteController.text, date: date, month: monthNumber, year: year));
+                        }else{
+                          notesBloc.add(NotesSaveNoteEvent(data: noteController.text,title: titleController.text, date: date, month: monthNumber, year: year));
+                        }
+                      }, 
+                      icon: Icon(Icons.save_outlined)
+                    ),
+                    SizedBox(width: 25.w,)
                 ],
               ),
               body: SafeArea(

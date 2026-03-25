@@ -18,8 +18,12 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
   FutureOr<void> notesInitialEvent(NotesInitialEvent event, Emitter<NotesState> emit) async{
     if(event.isEdit){
       emit(NotesLoadingState());
-      await Future.delayed(Duration(seconds: 3));
+      await Future.delayed(Duration(seconds: 1));
       emit(NotesEditNotesState());
+    }else if(event.isRead){
+      emit(NotesLoadingState());
+      await Future.delayed(Duration(seconds: 1));
+      emit(NoteReadNoteState());
     }else{
       emit(NotesCreateNoteState());
     }
