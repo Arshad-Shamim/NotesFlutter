@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:notes/Data/api_service.dart';
 import 'package:notes/Data/dbHelper.dart';
 import 'package:notes/model/Notes.dart';
 
@@ -13,6 +15,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     on<NotesInitialEvent>(notesInitialEvent);
     on<NotesSaveNoteEvent>(notesSaveNote);
     on<NoteSaveEditNoteEvent>(noteSaveEditNoteEvent);
+    on<NotesQGenBtnClickEvent>(notesQGenBtnClickEvent);
   }
 
   FutureOr<void> notesInitialEvent(NotesInitialEvent event, Emitter<NotesState> emit) async{
@@ -67,5 +70,18 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
         print("result $status");
       }
     }
+  }
+
+  FutureOr<void> notesQGenBtnClickEvent(NotesQGenBtnClickEvent event, Emitter<NotesState> emit) async{
+    if(event.note==null){
+      emit(NoteEmptyNoteDescState());
+    }
+    // emit(NotesLoadingState());
+    String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyD5k8SbZvCULvON1HwU8G0-uVHyMp8KtUs";
+    String res = await ApiService.generateQuestion(url_p: url, title: event.title, desc: event.note!);
+    Map<String,dynamic> data = jsonDecode(res);
+    String questions = data["candidates"]![0]["content"]!["parts"]![0]["text"];
+    emit(NoteControllerAddQGenState(data: questions));
+    emit(NoteReadNoteState());
   }
 }

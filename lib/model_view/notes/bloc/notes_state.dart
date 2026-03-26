@@ -20,3 +20,13 @@ class NotesSaveNoteSuccessState extends NotesActionState{}
 class NoteEditNoteSuccessState extends NotesActionState{}
 
 class NoteReadNoteState extends NotesState{}
+
+class NoteEmptyNoteDescState extends NotesActionState{}
+
+class NoteQGenBtnClickSuccessState extends NotesState{}
+
+class NoteControllerAddQGenState extends NotesActionState{
+  String data;
+
+  NoteControllerAddQGenState({required this.data});
+}

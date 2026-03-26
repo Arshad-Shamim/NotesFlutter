@@ -31,3 +31,10 @@ class NoteSaveEditNoteEvent extends NotesEvent{
 
   NoteSaveEditNoteEvent({required this.id, required this.title, required this.data, required this.date, required this.month, required this.year});
 }
+
+class NotesQGenBtnClickEvent extends NotesEvent{
+  String title;
+  String? note;
+
+  NotesQGenBtnClickEvent({required this.title,this.note});
+}

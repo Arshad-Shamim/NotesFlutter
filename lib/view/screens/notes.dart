@@ -106,6 +106,13 @@ class _NotesScreenState extends State<NotesScreen> {
             showSnackBar("Note Edit Successfully!");
             Navigator.pop(context,true);
             break;
+          case NoteEmptyNoteDescState:
+            showSnackBar("Note Data is Empty!");
+            break;
+          case NoteControllerAddQGenState:
+            NoteControllerAddQGenState currentState = state as NoteControllerAddQGenState;
+            noteController.text = currentState.data;
+            break;
         }
       },
       builder: (context, state) {
@@ -119,8 +126,9 @@ class _NotesScreenState extends State<NotesScreen> {
               backgroundColor: Colors.white,
               appBar: AppBar(
                 backgroundColor: Colors.white,
-                actions: [
-                  if(!isRead)          
+                actions: 
+                  !isRead?
+                  [      
                     IconButton(
                       iconSize: 28.sp,
                       onPressed: (){
@@ -133,7 +141,29 @@ class _NotesScreenState extends State<NotesScreen> {
                       icon: Icon(Icons.save_outlined)
                     ),
                     SizedBox(width: 25.w,)
-                ],
+                  ]:
+                  [
+                    Padding(
+                      padding: EdgeInsets.only(right: 12.w),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          notesBloc.add(NotesQGenBtnClickEvent(title: titleController.text,note: noteController.text));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.quiz, size: 18.sp),
+                            SizedBox(width: 5.w),
+                            Text("Q-Gen"),
+                          ],
+                        ),
+                      ),
+                    )
+                  ]
+                ,
               ),
               body: SafeArea(
                 child: Column(
@@ -141,6 +171,7 @@ class _NotesScreenState extends State<NotesScreen> {
                   children: [
                     DateSection(date: date, month: month, year: year, day: day),
                     SizedBox(height: 10,),
+
                     NotesPad(titleController: titleController,noteController: noteController,),
                   ],
                 ),
