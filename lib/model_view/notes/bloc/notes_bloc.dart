@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:notes/Data/api_service.dart';
 import 'package:notes/Data/dbHelper.dart';
 import 'package:notes/model/Notes.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 part 'notes_event.dart';
 part 'notes_state.dart';
@@ -76,9 +77,11 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     if(event.note==null){
       emit(NoteEmptyNoteDescState());
     }
+    await dotenv.load(fileName: '.env');
     // emit(NotesLoadingState());
-    String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyD5k8SbZvCULvON1HwU8G0-uVHyMp8KtUs";
+    String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${dotenv.env['API_KEY']}";
     String res = await ApiService.generateQuestion(url_p: url, title: event.title, desc: event.note!);
+    print(res);
     Map<String,dynamic> data = jsonDecode(res);
     String questions = data["candidates"]![0]["content"]!["parts"]![0]["text"];
     emit(NoteControllerAddQGenState(data: questions));
