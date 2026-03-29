@@ -18,7 +18,7 @@ class NotesScreen extends StatefulWidget {
   final bool isRead;
   NotesModel? note;
 
-  NotesScreen({super.key, required this.isEdit, this.note,required this.isRead});
+  NotesScreen({super.key, required this.isEdit, this.note,required this.isRead,});
 
   @override
   State<NotesScreen> createState() => _NotesScreenState();
@@ -35,6 +35,7 @@ class _NotesScreenState extends State<NotesScreen> {
   late bool isEdit;
   NotesModel? note;
   late bool isRead;
+  List<Map<String,String>>? quesList;
 
   void showSnackBar(String msg){
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
@@ -110,10 +111,15 @@ class _NotesScreenState extends State<NotesScreen> {
           case NoteEmptyNoteDescState:
             showSnackBar("Note Data is Empty!");
             break;
-          case NoteControllerAddQGenState:
-            NoteControllerAddQGenState currentState = state as NoteControllerAddQGenState;
-            noteController.text = currentState.data;
+          case NoteAddQuesListState:
+            NoteAddQuesListState currentState = state as NoteAddQuesListState;
+            quesList = currentState.data;
             break;
+          case NoteQGenBtnFailState:
+            NoteQGenBtnFailState currentState = state as NoteQGenBtnFailState;
+            showSnackBar(state.msg);
+            break;
+
         }
       },
       builder: (context, state) {
@@ -122,7 +128,8 @@ class _NotesScreenState extends State<NotesScreen> {
           case NotesLoadingState:
             return Scaffold(body: Center(child:CircularProgressIndicator()),);
             break;
-          case NotesCreateNoteState || NotesEditNotesState || NoteReadNoteState:
+          case NotesCreateNoteState || NotesEditNotesState || NoteReadNoteState || NoteQGenBtnClickSuccessState || NotesQGenBtnLoadingState:
+
             return Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
@@ -154,12 +161,15 @@ class _NotesScreenState extends State<NotesScreen> {
                           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                         ),
                         child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.quiz, size: 18.sp),
-                            SizedBox(width: 5.w),
-                            Text("Q-Gen"),
-                          ],
+                          mainAxisAlignment: MainAxisAlignment.center, 
+                          children: 
+                            state is!  NotesQGenBtnLoadingState? [
+                              Icon(Icons.quiz, size: 18.sp),
+                              SizedBox(width: 5.w),                              
+                              Text("Q-Gen"),
+                            ]: [
+                              SizedBox(height: 20.h,width: 20.w,child: CircularProgressIndicator())
+                            ]
                         ),
                       ),
                     )
@@ -173,7 +183,7 @@ class _NotesScreenState extends State<NotesScreen> {
                     DateSection(date: date, month: month, year: year, day: day),
                     SizedBox(height: 10,),
 
-                    NotesPad(titleController: titleController,noteController: noteController,),
+                    NotesPad(titleController: titleController,noteController: noteController, quesList: quesList),
                   ],
                 ),
               ),

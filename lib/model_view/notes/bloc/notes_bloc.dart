@@ -78,13 +78,64 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
       emit(NoteEmptyNoteDescState());
     }
     await dotenv.load(fileName: '.env');
-    // emit(NotesLoadingState());
+    emit(NotesQGenBtnLoadingState());
     String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${dotenv.env['API_KEY']}";
-    String res = await ApiService.generateQuestion(url_p: url, title: event.title, desc: event.note!);
-    print(res);
+    dynamic res = await ApiService.generateQuestion(url_p: url, title: event.title, desc: event.note!);
+
+    if(res.statusCode!=200){
+      Map<String,dynamic> data = jsonDecode(res.body);      
+      emit(NoteQGenBtnFailState(msg: data["error"]["message"]));
+      emit(NoteReadNoteState());
+      return;
+    }
+
+    res = res.body;
     Map<String,dynamic> data = jsonDecode(res);
     String questions = data["candidates"]![0]["content"]!["parts"]![0]["text"];
-    emit(NoteControllerAddQGenState(data: questions));
-    emit(NoteReadNoteState());
+
+    List<Map<String,String>> quesList = [];
+
+    questions.trim();
+    int size = questions.length;
+    int c1=0;
+    while(c1<size){
+      Map<String,String> helperMap={};
+
+      while(questions[c1]!='['){
+        c1++;
+      }
+      c1++;
+
+      int st,end;
+      st=c1;
+      while(questions[c1]!='|'){
+        c1++;
+      }
+      end=c1;
+      c1++;
+
+      String ques = questions.substring(st,end);
+      helperMap["ques"] = ques;
+
+      while(questions[c1]==' '){
+        c1++;
+      }
+
+      st=c1;
+      while(questions[c1]!=']'){
+        c1++;
+      }
+      end = c1;
+      c1++;
+      String hint = questions.substring(st,end);
+      helperMap["hint"]=hint;
+
+      quesList.add(helperMap);
+    }
+
+
+
+    emit(NoteAddQuesListState(data: quesList));
+    emit(NoteQGenBtnClickSuccessState());
   }
 }

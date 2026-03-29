@@ -25,8 +25,17 @@ class NoteEmptyNoteDescState extends NotesActionState{}
 
 class NoteQGenBtnClickSuccessState extends NotesState{}
 
-class NoteControllerAddQGenState extends NotesActionState{
-  String data;
 
-  NoteControllerAddQGenState({required this.data});
+class NoteAddQuesListState extends NotesActionState{
+  List<Map<String,String>> data;
+
+  NoteAddQuesListState({required this.data});
+}
+
+class NotesQGenBtnLoadingState extends NotesState{}
+
+class NoteQGenBtnFailState extends NotesActionState{
+  String msg;
+
+  NoteQGenBtnFailState({required this.msg});
 }
