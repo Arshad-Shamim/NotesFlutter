@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notes/model/Notes.dart';
 import 'package:notes/model_view/home/bloc/home_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes/view/screens/notes.dart';
@@ -13,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  late List<NotesModel> notesList;
   void showSnackBar(String msg){
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
@@ -69,11 +71,39 @@ class _HomeScreenState extends State<HomeScreen> {
             return Scaffold(body: Center(child: CircularProgressIndicator(),),);
           case HomeDisplayNotesState:
             HomeDisplayNotesState currentState = state as HomeDisplayNotesState;
+
+            if(!currentState.isSerach){
+              notesList=currentState.listNotesModel;
+            }
+
             return Scaffold(
-              appBar: AppBar(
-                backgroundColor: Colors.white,
-                title: Text("  Notepad"),
-              ),              
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+
+              title: TextField(
+                onChanged: (value) {
+                  homeBloc.add(HomeSearchItemChangeEvent(key: value, notes: currentState.listNotesModel, fixList: notesList));
+                },
+                decoration: InputDecoration(
+                  hintText: "Search in Notepad...", 
+
+                  prefixIcon: Icon(Icons.search),
+
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.sort),
+                    onPressed: () {},
+                  ),
+
+                  filled: true,
+                  fillColor: Colors.grey.shade100,
+
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+            ),             
               body:Padding(
                 padding: EdgeInsets.symmetric(horizontal: 6.w,vertical: 10.h),
                 child: ListView.builder(
@@ -103,8 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               blurRadius: 2.r,
                               color: Colors.grey.shade300,
                             )
-                          ],
-                        ),
+                          ],                        ),
                                       
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -145,8 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         
                                     SizedBox(height: 6.h),
                                         
-                                    Text(
-                                      "$datenum/$month/$year",
+                                    Text(                                      "$datenum/$month/$year",
                                       style: TextStyle(
                                         color: Colors.grey,
                                         fontSize: 12.sp,

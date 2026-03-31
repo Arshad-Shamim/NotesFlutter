@@ -10,8 +10,9 @@ class HomeNavigateCreateNoteScreenState extends HomeActionState{}
 
 class HomeDisplayNotesState extends HomeState{
   final List<NotesModel> listNotesModel;
+  bool isSerach=false;
 
-  HomeDisplayNotesState({required this.listNotesModel});
+  HomeDisplayNotesState({required this.listNotesModel,required this.isSerach});
 }
 
 class HomeNoteDeleteSuccessState extends HomeActionState{}

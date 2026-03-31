@@ -3,10 +3,11 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:notes/Data/api_service.dart';
-import 'package:notes/Data/dbHelper.dart';
+import 'package:notes/model/api_service.dart';
+import 'package:notes/model/dbHelper.dart';
 import 'package:notes/model/Notes.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:notes/model/note_question.dart';
 
 part 'notes_event.dart';
 part 'notes_state.dart';
@@ -93,13 +94,12 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     Map<String,dynamic> data = jsonDecode(res);
     String questions = data["candidates"]![0]["content"]!["parts"]![0]["text"];
 
-    List<Map<String,String>> quesList = [];
+    List<NoteQuestion> quesList = [];
 
     questions.trim();
     int size = questions.length;
     int c1=0;
     while(c1<size){
-      Map<String,String> helperMap={};
 
       while(questions[c1]!='['){
         c1++;
@@ -115,7 +115,6 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
       c1++;
 
       String ques = questions.substring(st,end);
-      helperMap["ques"] = ques;
 
       while(questions[c1]==' '){
         c1++;
@@ -128,9 +127,8 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
       end = c1;
       c1++;
       String hint = questions.substring(st,end);
-      helperMap["hint"]=hint;
 
-      quesList.add(helperMap);
+      quesList.add(NoteQuestion(question: ques, hint: hint));
     }
 
 

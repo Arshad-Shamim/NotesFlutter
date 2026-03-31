@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:notes/model/note_question.dart';
 
 class NotesPad extends StatefulWidget {
 
   final TextEditingController titleController;
   final TextEditingController noteController;
-  final List<Map<String,String>>? quesList;
+  final List<NoteQuestion>? quesList;
 
   const NotesPad({super.key, required this.titleController, required this.noteController, this.quesList});
 
@@ -83,7 +84,7 @@ class _NotesPadState extends State<NotesPad> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Ques: ${item['ques']}",
+                                  "Ques: ${item.question}",
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w600,
@@ -91,7 +92,7 @@ class _NotesPadState extends State<NotesPad> {
                                 ),
                                 SizedBox(height: 6.h),
                                 Text(
-                                  "Hint: ${item['hint']}",
+                                  "Hint: ${item.hint}",
                                   style: TextStyle(
                                     fontSize: 14.sp,
                                     color: Colors.grey,

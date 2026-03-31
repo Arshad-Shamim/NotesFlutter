@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:notes/model/Notes.dart';
+import 'package:notes/model/note_question.dart';
 import 'package:notes/model_view/home/bloc/home_bloc.dart';
 import 'package:notes/model_view/notes/bloc/notes_bloc.dart';
 import 'package:notes/view/screens/home.dart';
@@ -35,7 +36,7 @@ class _NotesScreenState extends State<NotesScreen> {
   late bool isEdit;
   NotesModel? note;
   late bool isRead;
-  List<Map<String,String>>? quesList;
+  List<NoteQuestion>? quesList;
 
   void showSnackBar(String msg){
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));

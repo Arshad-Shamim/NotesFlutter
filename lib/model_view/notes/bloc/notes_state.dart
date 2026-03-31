@@ -27,7 +27,7 @@ class NoteQGenBtnClickSuccessState extends NotesState{}
 
 
 class NoteAddQuesListState extends NotesActionState{
-  List<Map<String,String>> data;
+  List<NoteQuestion> data;
 
   NoteAddQuesListState({required this.data});
 }

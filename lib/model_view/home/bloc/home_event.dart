@@ -24,3 +24,11 @@ class HomeNoteBtnTapEvent extends HomeEvent{
 
   HomeNoteBtnTapEvent({required this.note});
 }
+
+class HomeSearchItemChangeEvent extends HomeEvent{
+  String key;
+  List<NotesModel> notes;
+  List<NotesModel> fixList;
+
+  HomeSearchItemChangeEvent({required this.key, required this.notes, required this.fixList});
+}
