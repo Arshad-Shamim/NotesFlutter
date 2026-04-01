@@ -61,15 +61,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   FutureOr<void> homeSearchItemChangeEvent(HomeSearchItemChangeEvent event, Emitter<HomeState> emit) {
 
     String key = event.key;
-    List<NotesModel> notesList= event.notes;
+    List<NotesModel> notesList= event.fixList;
     List<NotesModel> fixList = event.fixList;
 
     if(key==""){
       emit(HomeDisplayNotesState(listNotesModel: fixList, isSerach: true));
+      return null;
     }
 
     int keyLength = key.length;
-    notesList = notesList.where((item)=>item.title.substring(0,keyLength<item.title.length?keyLength:0).toLowerCase()==key.toLowerCase()).toList();
+    notesList = notesList.where((item)=>item.title.substring(0,keyLength<=item.title.length?keyLength:0).toLowerCase()==key.toLowerCase()).toList();
     
     if(notesList.isEmpty){
       notesList = fixList;

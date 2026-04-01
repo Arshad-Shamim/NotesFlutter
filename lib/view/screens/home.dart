@@ -82,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
               title: TextField(
                 onChanged: (value) {
-                  homeBloc.add(HomeSearchItemChangeEvent(key: value, notes: currentState.listNotesModel, fixList: notesList));
+                  homeBloc.add(HomeSearchItemChangeEvent(key: value, fixList: notesList));
                 },
                 decoration: InputDecoration(
                   hintText: "Search in Notepad...", 
