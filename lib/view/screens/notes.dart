@@ -38,8 +38,16 @@ class _NotesScreenState extends State<NotesScreen> {
   late bool isRead;
   List<NoteQuestion>? quesList;
 
-  void showSnackBar(String msg){
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  void showSnackBar(String msg, Color? color){
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: color, 
+        content: Text(
+          msg,
+          style: TextStyle(color: Colors.black),
+        ),
+      ),
+    );  
   }
 
   void handleEditMode(NotesModel note){
@@ -99,18 +107,18 @@ class _NotesScreenState extends State<NotesScreen> {
 
         switch(state.runtimeType){
           case NotesUntitleNoteState:
-            showSnackBar("Note can be Untitle");
+            showSnackBar("Note can not be Untitle",Colors.red);
             break;
           case NotesSaveNoteSuccessState:
-            showSnackBar("Note Save Successfully");
+            showSnackBar("Note Save Successfully",Colors.green);
             Navigator.pop(context,true);
             break;
           case NoteEditNoteSuccessState:
-            showSnackBar("Note Edit Successfully!");
+            showSnackBar("Note Edit Successfully!",Colors.green);
             Navigator.pop(context,true);
             break;
           case NoteEmptyNoteDescState:
-            showSnackBar("Note Data is Empty!");
+            showSnackBar("Note Data is Empty!",Colors.red);
             break;
           case NoteAddQuesListState:
             NoteAddQuesListState currentState = state as NoteAddQuesListState;
@@ -118,7 +126,7 @@ class _NotesScreenState extends State<NotesScreen> {
             break;
           case NoteQGenBtnFailState:
             NoteQGenBtnFailState currentState = state as NoteQGenBtnFailState;
-            showSnackBar(state.msg);
+            showSnackBar(state.msg,Colors.red);
             break;
 
         }

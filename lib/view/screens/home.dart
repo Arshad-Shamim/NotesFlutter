@@ -15,8 +15,17 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   late List<NotesModel> notesList;
-  void showSnackBar(String msg){
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+
+  void showSnackBar(String msg, Color? color){
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: color, 
+        content: Text(
+          msg,
+          style: TextStyle(color: Colors.black),
+        ),
+      ),
+    );  
   }
 
   final HomeBloc homeBloc = HomeBloc();
@@ -45,10 +54,10 @@ class _HomeScreenState extends State<HomeScreen> {
             }
             break;
           case HomeNoteDeleteSuccessState:
-            showSnackBar("Note Deleted Successfully");
+            showSnackBar("Note Deleted Successfully",Colors.green);
             break;
           case HomeNoteDeleteFailerState:
-            showSnackBar("Note Delete Failed");
+            showSnackBar("Note Delete Failed",Colors.red);
             homeBloc.add(HomeInitialEvent());
             break;
           case HomeNavigateEditNoteState:
