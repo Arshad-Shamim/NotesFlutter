@@ -29,4 +29,46 @@ class ApiService{
 
     return res;
   }
+
+  static Future<String> SignUp({required Map<String,String>formData}) async{
+    Map<String,Map<String,String>> body= {"form":formData};
+
+    final url = Uri.parse("https://lockit-server.vercel.app/user/signup/store");
+
+    final res = await http.post(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        "Content-Type":"application/json"
+      }
+    );
+
+    if(res.statusCode!=200){
+      print(res.body);
+    }
+
+    return res.body;
+
+  }
+
+    static Future<String> Signin({required String username, required String password}) async{
+
+    final url = Uri.parse("https://lockit-server.vercel.app/user/signin/authenticate");
+
+    final res = await http.get(
+      url,
+      headers: {
+        "Content-Type":"application/json",
+        "username":username,
+        "pws":password
+      }
+    );
+
+    if(res.statusCode!=200){
+      print(res.body);
+    }
+
+    return res.body;
+
+  }
 }

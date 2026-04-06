@@ -98,10 +98,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   prefixIcon: Icon(Icons.search),
 
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.sort),
-                    onPressed: () {},
-                  ),
+                  // suffixIcon: IconButton(
+                  //   icon: Icon(Icons.sort),
+                  //   onPressed: () {},
+                  // ),
 
                   filled: true,
                   fillColor: Colors.grey.shade100,
@@ -113,105 +113,105 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),             
-              body:Padding(
-                padding: EdgeInsets.symmetric(horizontal: 6.w,vertical: 10.h),
-                child: ListView.builder(
-                  itemCount: currentState.listNotesModel.length,
-                  itemBuilder: (context, index) {
+            body:Padding(
+              padding: EdgeInsets.symmetric(horizontal: 6.w,vertical: 10.h),
+              child: ListView.builder(
+                itemCount: currentState.listNotesModel.length,
+                itemBuilder: (context, index) {
 
-                    final note = currentState.listNotesModel[index];
-                    final date = note.date.trim();
-                    final year = date.substring(0,4);
-                    final month = date.substring(5,7);
-                    final datenum =  date.substring(8);
+                  final note = currentState.listNotesModel[index];
+                  final date = note.date.trim();
+                  final year = date.substring(0,4);
+                  final month = date.substring(5,7);
+                  final datenum =  date.substring(8);
 
-                    return Dismissible(
-                      key: Key(note.id.toString()),
-                      direction: DismissDirection.endToStart,
-                      onDismissed: (direction){
-                        homeBloc.add(HomeNoteDeleteEvent(id: note.id));
-                      },
-                      child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-                        padding: EdgeInsets.all(10.w),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 2.r,
-                              color: Colors.grey.shade300,
-                            )
-                          ],                        ),
-                                      
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.blue,
-                              radius: 22.r,
-                              child: Icon(Icons.notes, color: Colors.white,size: 28.r,),
-                            ),
-                                      
-                            SizedBox(width: 10.w),
-                                      
-                            Expanded(
-                              child: InkWell(
-                                onTap: (){
-                                  homeBloc.add(HomeNoteBtnTapEvent(note: note));
-                                },
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      note.title,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.sp,
-                                      ),
+                  return Dismissible(
+                    key: Key(note.id.toString()),
+                    direction: DismissDirection.endToStart,
+                    onDismissed: (direction){
+                      homeBloc.add(HomeNoteDeleteEvent(id: note.id));
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                      padding: EdgeInsets.all(10.w),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.r),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 2.r,
+                            color: Colors.grey.shade300,
+                          )
+                        ],                        ),
+                                    
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.blue,
+                            radius: 22.r,
+                            child: Icon(Icons.notes, color: Colors.white,size: 28.r,),
+                          ),
+                                    
+                          SizedBox(width: 10.w),
+                                    
+                          Expanded(
+                            child: InkWell(
+                              onTap: (){
+                                homeBloc.add(HomeNoteBtnTapEvent(note: note));
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    note.title,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.sp,
                                     ),
-                                        
-                                    SizedBox(height: 4.h),
-                                        
-                                    Text(
-                                      note.description!=null?(note.description!.substring(0,note.description!.length>30?30:note.description!.length)+(note.description!.length>40?".....":"")): "No details added",
-                                      style: TextStyle(
-                                        color: note.description==null ? Colors.grey : Colors.black87,
-                                        fontStyle: note.description==null ? FontStyle.italic : FontStyle.normal,
-                                      ),
+                                  ),
+                                      
+                                  SizedBox(height: 4.h),
+                                      
+                                  Text(
+                                    note.description!=null?(note.description!.substring(0,note.description!.length>30?30:note.description!.length)+(note.description!.length>40?".....":"")): "No details added",
+                                    style: TextStyle(
+                                      color: note.description==null ? Colors.grey : Colors.black87,
+                                      fontStyle: note.description==null ? FontStyle.italic : FontStyle.normal,
                                     ),
-                                        
-                                    SizedBox(height: 6.h),
-                                        
-                                    Text(                                      "$datenum/$month/$year",
-                                      style: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 12.sp,
-                                      ),
+                                  ),
+                                      
+                                  SizedBox(height: 6.h),
+                                      
+                                  Text(                                      "$datenum/$month/$year",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 12.sp,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
-                                      
-                            // 🔹 Right Icons
-                            SizedBox(height: 10.h),
+                          ),
+                                    
+                          // 🔹 Right Icons
+                          SizedBox(height: 10.h),
 
-                            IconButton(
-                              onPressed: (){
-                                homeBloc.add(HomeEditIconClickEvent(note: note));
-                              },
-                              icon: Icon(Icons.edit),
-                              color: Colors.grey,
-                              iconSize: 20,
-                            )
-                          ],
-                        ),
+                          IconButton(
+                            onPressed: (){
+                              homeBloc.add(HomeEditIconClickEvent(note: note));
+                            },
+                            icon: Icon(Icons.edit),
+                            color: Colors.grey,
+                            iconSize: 20,
+                          )
+                        ],
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
+            ),
               floatingActionButton: FloatingActionButton(
                 onPressed: () {
                   homeBloc.add(HomeAddNoteBtnClickEvent());
