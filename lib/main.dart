@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notes/view/screens/home.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:notes/view/screens/sngnup.dart';
+import 'package:notes/view/screens/signup.dart';
 
 
 void main(){

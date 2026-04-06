@@ -61,7 +61,7 @@ class _SignUpState extends State<SignUp> {
           case SignUpNavigateSignInScreen:
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Signin()));
             break;
-          case SigninNavigateHomeScreenState:
+          case SignUpNavigateHomeScreen:
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
             break;
         }

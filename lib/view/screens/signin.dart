@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes/model_view/signin/bloc/signin_bloc.dart';
 import 'package:notes/view/screens/home.dart';
-import 'package:notes/view/screens/sngnup.dart';
+import 'package:notes/view/screens/signup.dart';
 import 'package:notes/view/widgets/text_form_feild.dart';
 import 'package:notes/view/widgets/password_form_feild.dart';
 
