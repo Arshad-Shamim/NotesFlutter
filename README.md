@@ -1,16 +1,77 @@
-# notes
+# StudyMate AI
 
-A new Flutter project.
+An AI-powered note-taking application that helps users create, manage, and enhance their study notes by automatically generating important questions.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## Features
 
-A few resources to get you started if this is your first Flutter project:
+*  User Authentication (Login / Signup)
+*  Create, Edit, and Delete Notes
+*  AI-generated Important Questions from Notes
+*  Search Functionality for Quick Access
+*  Simple and User-Friendly UI
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+##  Tech Stack
+
+* **Frontend:** Flutter
+* **Language:** Dart
+* **AI Integration:** (Add if used, e.g., OpenAI API / Gemini API)
+* **Database:** (Add if used, e.g., Firebase / SQLite)
+
+---
+
+##  Installation & Setup
+
+Follow these steps to run the project locally:
+
+```bash
+# Clone the repository
+git clone https://github.com/Arshad-Shamim/NotesFlutter
+
+# Navigate to project directory
+cd NotesFlutter
+
+# Install dependencies
+flutter pub get
+
+# Run the app
+flutter run
+```
+
+---
+
+##  Project Structure
+
+```
+lib/
+ ├── screens/
+ ├── widgets/
+ ├── services/
+ ├── models/
+```
+
+---
+
+##  Future Improvements
+
+*  Dark Mode Support
+*  Cloud Sync for Notes
+*  AI-based Notes Summary
+*  Smart Categorization using AI
+
+---
+
+##  Author
+
+**Arshad Shamim**
+
+* GitHub: https://github.com/Arshad-Shamim
+
+---
+
+##  Show Your Support
+
+If you like this project, give it a ⭐ on GitHub!
