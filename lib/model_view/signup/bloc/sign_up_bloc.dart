@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:notes/model/api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'sign_up_event.dart';
 part 'sign_up_state.dart';
@@ -43,7 +44,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     res = jsonDecode(res);
 
     if(res["status"]==1){
+      final prefs = await SharedPreferences.getInstance();
       String token = res["token"];
+      await prefs.setString('token', token);
     }
     
 

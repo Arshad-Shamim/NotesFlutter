@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:notes/model/api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'signin_event.dart';
 part 'signin_state.dart';
@@ -38,7 +39,9 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
     res = jsonDecode(res);
 
     if(res["status"]==1){
+      final prefs = await SharedPreferences.getInstance();
       String token = res["token"];
+      await prefs.setString('token', token);
     }
 
     print(res);
@@ -46,7 +49,6 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
     emit(SigninSigninBtnClickSuccessState(msg:res["msg"], status: res["status"]==1?true:false));
 
     if(res["status"]==1){
-      print("hi");
       emit(SigninNavigateHomeScreenState());
     }else{
       emit(SigninInitialState());
